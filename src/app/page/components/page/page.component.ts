@@ -54,7 +54,6 @@ export class PageComponent implements OnInit, AfterViewInit {
     this.paginator.page
       .pipe(
         map(val => {
-          console.log(val);
           this.page.setItemsPerPage(val.pageSize);
           this.page.setCurrentPage(val.pageIndex);
           if ((val.pageIndex + 1) * val.pageSize >= val.length) {

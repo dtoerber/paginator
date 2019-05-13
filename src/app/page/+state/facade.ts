@@ -11,13 +11,45 @@ export class PageFacade {
     select(fromSelectors.selectAllItems)
   );
 
+  loading$: Observable<boolean> = this.store.pipe(
+    select(fromSelectors.selectLoading)
+  );
+
+  currentPage$: Observable<number> = this.store.pipe(
+    select(fromSelectors.selectCurrentPage)
+  );
+
+  itemsPerPage$: Observable<number> = this.store.pipe(
+    select(fromSelectors.selectItemsPerPage)
+  );
+
+  total$: Observable<number> = this.store.pipe(
+    select(fromSelectors.selectTotal)
+  );
+
   constructor(private store: Store<fromReducer.State>) {}
 
-  load() {
-    this.store.dispatch(new fromActions.LoadAction());
+  load(pageSize: number) {
+    this.store.dispatch(new fromActions.LoadAction(pageSize));
+  }
+
+  loadNextPage(pageSize: number) {
+    this.store.dispatch(new fromActions.NextPageAction(pageSize));
+  }
+
+  setLoading(loading: boolean) {
+    this.store.dispatch(new fromActions.SetLoadingAction(loading));
   }
 
   save(person: Person) {
     this.store.dispatch(new fromActions.SaveAction(person));
+  }
+
+  setCurrentPage(page: number) {
+    this.store.dispatch(new fromActions.SetCurrentPageAction(page));
+  }
+
+  setItemsPerPage(items: number) {
+    this.store.dispatch(new fromActions.SetItemPerPageAction(items));
   }
 }

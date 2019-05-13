@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { tap, map, finalize, take } from 'rxjs/operators';
 import { PageFacade } from '../../+state/facade';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Person } from '../../../models';
@@ -18,11 +19,11 @@ export class PageComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
+  loading = false;
+
   displayedColumns = ['name', 'email'];
 
-  constructor(public page: PageFacade) {
-    page.load();
-  }
+  constructor(public page: PageFacade) {}
 
   create() {
     const person: Person = {
@@ -40,6 +41,8 @@ export class PageComponent implements OnInit, AfterViewInit {
 
   // Use AfterViewInit to wire up <mat-table>
   ngAfterViewInit() {
+    this.page.load(this.paginator.pageSize);
+
     // Configure sortingDataAccessor because
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
@@ -48,6 +51,38 @@ export class PageComponent implements OnInit, AfterViewInit {
       }
     };
     this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.paginator.page
+      .pipe(
+        map(val => {
+          console.log(val);
+          this.page.setItemsPerPage(val.pageSize);
+          this.page.setCurrentPage(val.pageIndex);
+          if ((val.pageIndex + 1) * val.pageSize >= val.length) {
+            this.page.setLoading(true);
+            this.page.loadNextPage(val.pageSize);
+          }
+        })
+      )
+      .subscribe();
+    // this.dataSource.sort = this.sort;
   }
+
+  // next() {
+  //   console.log(`Length: ${this.dataSource.data.length}`);
+  //   console.log(`Current Page: ${this.paginator.pageIndex}`);
+  //   console.log(`Number of Pages: `, this.paginator.getNumberOfPages());
+  //   if (this.paginator.pageIndex + 1 === this.paginator.getNumberOfPages()) {
+  //     this.page.loadNextPage();
+  //   }
+
+  //   if (this.paginator.hasNextPage()) {
+  //     this.paginator.nextPage();
+  //   }
+  // }
+
+  // previous() {
+  //   if (this.paginator.hasPreviousPage()) {
+  //     this.paginator.previousPage();
+  //   }
+  // }
 }

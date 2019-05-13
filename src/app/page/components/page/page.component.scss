@@ -1,3 +1,14 @@
 table {
   width: 100%;
 }
+
+button {
+  margin-bottom: 15px;
+}
+
+.paginator {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 10px;
+  margin-right: 10px;
+}

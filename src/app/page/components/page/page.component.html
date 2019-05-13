@@ -1,4 +1,8 @@
+<button mat-raised-button color="accent" (click)="create()">
+  Create Person
+</button>
 <div class="mat-elevation-z8">
+  <!-- <mat-progress-bar *ngIf="page.loading$ | async"  mode="indeterminate" ></mat-progress-bar> -->
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
@@ -19,9 +23,24 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
+  <!-- <div class="paginator">
+    <button mat-icon-button (click)="next()">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+    <button mat-icon-button (click)="previous()">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+  </div> -->
   <mat-paginator
+    [length]="page.total$ | async"
     [pageSizeOptions]="[5, 10, 20]"
-    showFirstLastButtons
+    [pageSize]="page.itemsPerPage$ | async"
+    [pageIndex]="page.currentPage$ | async"
   ></mat-paginator>
+  <!-- <mat-paginator
+    [length]="(page.total$ | async) + 1"
+    [pageSizeOptions]="[5, 10, 20]"
+    [pageSize]="page.itemsPerPage$ | async"
+    [pageIndex]="page.currentPage$ | async"
+  ></mat-paginator> -->
 </div>
-<button mat-raised-button (click)="create()">Create Person</button>

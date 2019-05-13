@@ -13,17 +13,9 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import {
-  MatGridListModule,
-  MatCardModule,
-  MatMenuModule,
-  MatIconModule,
-  MatButtonModule,
-  MatToolbarModule,
-  MatSidenavModule,
-  MatListModule
-} from '@angular/material';
-import { LayoutModule } from '@angular/cdk/layout';
+
+import { MaterialModule } from './material/material.module';
+
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 @NgModule({
@@ -32,6 +24,7 @@ import { HomeComponent } from './home/home.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MaterialModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     StoreModule.forRoot(reducers, { metaReducers }),
@@ -39,18 +32,8 @@ import { HomeComponent } from './home/home.component';
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production
-    }),
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatListModule
+    })
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

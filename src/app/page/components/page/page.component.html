@@ -1,3 +1,2 @@
-<p>
-  page works!
-</p>
+<button mat-raised-button (click)="create()">Create Person</button>
+<div *ngFor="let person of page.people$ | async">{{ person.name }}</div>

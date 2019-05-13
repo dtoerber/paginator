@@ -11,11 +11,22 @@ export class PageEffects {
   load$: Observable<Action> = this.actions$.pipe(
     ofType<fromActions.LoadAction>(fromActions.ActionTypes.Load),
     switchMap(() => {
-      return this.firestore.col$(`items`).pipe(
+      return this.firestore.col$(`people`).pipe(
         map(data => new fromActions.LoadSuccessAction(data)),
         catchError(err => of(new fromActions.LoadErrorAction(err)))
       );
     })
+  );
+
+  @Effect()
+  save$: Observable<Action> = this.actions$.pipe(
+    ofType<fromActions.SaveAction>(fromActions.ActionTypes.Save),
+    switchMap(action =>
+      of(this.firestore.addWithId(`people`, action.payload)).pipe(
+        map(() => new fromActions.SaveSuccessAction()),
+        catchError(err => of(new fromActions.LoadErrorAction(err)))
+      )
+    )
   );
 
   constructor(private actions$: Actions, private firestore: FirestoreService) {}

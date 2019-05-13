@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageRoutingModule } from './page-routing.module';
-
+import { MaterialModule } from '../material/material.module';
 // Import Store files
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -15,6 +15,7 @@ import { PageComponent } from './components/page/page.component';
   imports: [
     CommonModule,
     PageRoutingModule,
+    MaterialModule,
     StoreModule.forFeature('page', reducer),
     EffectsModule.forFeature([PageEffects])
   ]

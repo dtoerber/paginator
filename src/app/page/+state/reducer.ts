@@ -1,9 +1,9 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import * as fromActions from './actions';
+import { Person } from '../../models';
+export interface State extends EntityState<Person> {}
 
-export interface State extends EntityState<any> {}
-
-export const adapter: EntityAdapter<any> = createEntityAdapter<any>();
+export const adapter: EntityAdapter<Person> = createEntityAdapter<Person>();
 
 export const initialState: any = adapter.getInitialState();
 

@@ -27,6 +27,10 @@ export class PageFacade {
     select(fromSelectors.selectTotal)
   );
 
+  selectedId$: Observable<string> = this.store.pipe(
+    select(fromSelectors.selectSelectedId)
+  );
+
   constructor(private store: Store<fromReducer.State>) {}
 
   load(pageSize: number) {
@@ -51,5 +55,9 @@ export class PageFacade {
 
   setItemsPerPage(items: number) {
     this.store.dispatch(new fromActions.SetItemPerPageAction(items));
+  }
+
+  setSelectedId(id: string) {
+    this.store.dispatch(new fromActions.SetSelectedIdAction(id));
   }
 }

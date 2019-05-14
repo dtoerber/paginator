@@ -27,3 +27,8 @@ export const selectItemsPerPage = createSelector(
   selectPageState,
   fromReducer.getItemsPerPage
 );
+
+export const selectSelectedId = createSelector(
+  selectPageState,
+  fromReducer.getSelectedId
+);

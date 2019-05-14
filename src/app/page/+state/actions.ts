@@ -15,7 +15,9 @@ export enum ActionTypes {
   SaveError = '[Paginator] Save',
 
   SetCurrentPage = '[Paginator] Set Current Page',
-  SetItemsPerPage = '[Paginator] Set Items Per Page'
+  SetItemsPerPage = '[Paginator] Set Items Per Page',
+
+  SetSelectedId = '[Paginator] Set Selected ID'
 }
 
 export class LoadAction implements Action {
@@ -58,6 +60,10 @@ export class SetItemPerPageAction implements Action {
   readonly type = ActionTypes.SetItemsPerPage;
   constructor(public payload: number) {}
 }
+export class SetSelectedIdAction implements Action {
+  readonly type = ActionTypes.SetSelectedId;
+  constructor(public payload: string) {}
+}
 
 export type Union =
   | LoadAction
@@ -69,4 +75,5 @@ export type Union =
   | SaveSuccessAction
   | SaveErrorAction
   | SetCurrentPageAction
-  | SetItemPerPageAction;
+  | SetItemPerPageAction
+  | SetSelectedIdAction;

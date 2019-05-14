@@ -21,7 +21,7 @@ export class DataService {
 
   retrieveInitialPeople(pageSize: number): Observable<any> {
     return this.afs
-      .collection(`people`, ref => ref.orderBy('name').limit(pageSize + 1))
+      .collection(`people`, ref => ref.orderBy('lastName').limit(pageSize + 1))
       .snapshotChanges()
       .pipe(
         map((actions: DocumentChangeAction<Person>[]) => {
@@ -39,7 +39,7 @@ export class DataService {
     return this.afs
       .collection(`people`, ref =>
         ref
-          .orderBy('name')
+          .orderBy('lastName')
           .limit(pageSize + 1)
           .startAfter(this.lastPersonRef)
       )
@@ -71,5 +71,12 @@ export class DataService {
         ref.where('name', '>=', letter.toUpperCase())
       );
     }
+  }
+
+  searchPeople(searchStr: string): Observable<Array<Person>> {
+    console.log(`in searchPeople:`, searchStr);
+    return this.firestoreUtils.col$('people', ref =>
+      ref.where('name', '<=', searchStr).limit(5)
+    );
   }
 }

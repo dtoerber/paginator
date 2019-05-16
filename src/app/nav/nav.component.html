@@ -25,6 +25,9 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>paginator</span>
+      <form [formGroup]="myForm">
+        <input matInput formControlName="search" placeholder="Search" />
+      </form>
     </mat-toolbar>
     <div class="container">
       <router-outlet></router-outlet>

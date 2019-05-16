@@ -1,12 +1,14 @@
-<button mat-raised-button color="accent" (click)="create()">
-  Create Person
-</button>
-<form [formGroup]="myForm">
-  <mat-form-field class="search-field">
-    <mat-icon matSuffix>search</mat-icon
-    ><input matInput formControlName="search" placeholder="Name" />
-  </mat-form-field>
-</form>
+<div class="container">
+  <button mat-raised-button color="accent" (click)="create()">
+    Create Person
+  </button>
+  <form [formGroup]="myForm">
+    <mat-form-field class="search-field">
+      <mat-icon matSuffix>search</mat-icon
+      ><input matInput formControlName="search" placeholder="Person" />
+    </mat-form-field>
+  </form>
+</div>
 <div class="mat-elevation-z8">
   <!-- <mat-progress-bar *ngIf="page.loading$ | async"  mode="indeterminate" ></mat-progress-bar> -->
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -20,10 +22,14 @@
       <td mat-cell *matCellDef="let person">{{ person.lastName }}</td>
     </ng-container>
 
-    <!-- Name Column -->
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef>Email</th>
       <td mat-cell *matCellDef="let person">{{ person.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef>Phone</th>
+      <td mat-cell *matCellDef="let person">{{ person.phone }}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

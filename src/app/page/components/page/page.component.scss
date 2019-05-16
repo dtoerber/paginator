@@ -1,9 +1,16 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
 table {
   width: 100%;
 }
 
 button {
   margin-bottom: 15px;
+  height: 40px;
+  align-self: center;
 }
 
 .paginator {

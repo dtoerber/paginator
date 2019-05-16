@@ -19,3 +19,20 @@
 .container {
   padding: 15px;
 }
+
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+form {
+  margin-right: 20px;
+}
+
+input {
+  padding-left: 15px;
+  background-color: white;
+  border-radius: 20px;
+  color: black;
+  font-size: 0.6em;
+}

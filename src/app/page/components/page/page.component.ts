@@ -11,6 +11,7 @@ import {
   map,
   debounceTime,
   takeUntil,
+  filter,
   distinctUntilChanged
 } from 'rxjs/operators';
 import { PageFacade } from '../../+state/facade';
@@ -35,7 +36,7 @@ export class PageComponent implements OnInit, AfterViewInit, OnDestroy {
   paginator: MatPaginator;
 
   loading = false;
-  displayedColumns = ['lastName', 'firstName', 'email'];
+  displayedColumns = ['lastName', 'firstName', 'email', 'phone'];
   selectedId = '';
 
   myForm: FormGroup;
@@ -58,8 +59,9 @@ export class PageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.myForm = this.fb.group({ search: '' });
     this.myForm.valueChanges
       .pipe(
-        debounceTime(750),
+        debounceTime(500),
         map(val => val.search),
+        filter(val => !!val),
         distinctUntilChanged(),
         takeUntil(this.destroy$)
       )

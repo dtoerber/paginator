@@ -27,8 +27,16 @@ export class PageFacade {
     select(fromSelectors.selectTotal)
   );
 
+  ids$: Observable<Array<string> | Array<number>> = this.store.pipe(
+    select(fromSelectors.selectIds)
+  );
+
   selectedId$: Observable<string> = this.store.pipe(
     select(fromSelectors.selectSelectedId)
+  );
+
+  filter$: Observable<string> = this.store.pipe(
+    select(fromSelectors.selectFilter)
   );
 
   constructor(private store: Store<fromReducer.State>) {}
@@ -59,5 +67,13 @@ export class PageFacade {
 
   setSelectedId(id: string) {
     this.store.dispatch(new fromActions.SetSelectedIdAction(id));
+  }
+
+  setFilter(filter: string) {
+    this.store.dispatch(new fromActions.SetFilterAction(filter));
+  }
+
+  retrieve(ids: Array<string>) {
+    this.store.dispatch(new fromActions.RetrieveAction(ids));
   }
 }

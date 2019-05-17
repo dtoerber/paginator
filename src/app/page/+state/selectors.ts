@@ -13,6 +13,11 @@ export const selectTotal = createSelector(
   fromReducer.selectTotal
 );
 
+export const selectIds = createSelector(
+  selectPageState,
+  fromReducer.selectIds
+);
+
 export const selectLoading = createSelector(
   selectPageState,
   fromReducer.getLoading
@@ -31,4 +36,9 @@ export const selectItemsPerPage = createSelector(
 export const selectSelectedId = createSelector(
   selectPageState,
   fromReducer.getSelectedId
+);
+
+export const selectFilter = createSelector(
+  selectPageState,
+  fromReducer.getFilter
 );

@@ -26,7 +26,12 @@
       </button>
       <span>paginator</span>
       <form [formGroup]="myForm">
-        <input matInput formControlName="search" placeholder="Search" />
+        <input
+          type="text"
+          matInput
+          formControlName="search"
+          placeholder="Search"
+        />
       </form>
     </mat-toolbar>
     <div class="container">

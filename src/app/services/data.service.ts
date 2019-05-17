@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
+import { map, tap, first } from 'rxjs/operators';
 import { FirestoreService } from '../services/firestore.service';
 import { Person } from '../models';
 import {
@@ -73,10 +73,9 @@ export class DataService {
     }
   }
 
-  searchPeople(searchStr: string): Observable<Array<Person>> {
-    console.log(`in searchPeople:`, searchStr);
-    return this.firestoreUtils.col$('people', ref =>
-      ref.where('name', '<=', searchStr).limit(5)
+  retrievePatients(ids: Array<string>): Observable<any> {
+    return forkJoin(
+      ids.map(id => this.firestoreUtils.doc$(`people/${id}`).pipe(first()))
     );
   }
 }

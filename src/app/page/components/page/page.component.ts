@@ -18,7 +18,6 @@ import { PageFacade } from '../../+state/facade';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Person } from '../../../models';
 import * as faker from 'faker';
-import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-page',
@@ -36,16 +35,12 @@ export class PageComponent implements OnInit, AfterViewInit, OnDestroy {
   paginator: MatPaginator;
 
   loading = false;
-  displayedColumns = ['lastName', 'firstName', 'email', 'phone'];
+  displayedColumns = ['id', 'lastName', 'firstName', 'email', 'phone'];
   selectedId = '';
 
   myForm: FormGroup;
 
-  constructor(
-    public page: PageFacade,
-    private fb: FormBuilder,
-    private data: DataService
-  ) {}
+  constructor(public page: PageFacade, private fb: FormBuilder) {}
 
   ngOnInit() {
     this.page.people$.pipe(takeUntil(this.destroy$)).subscribe(people => {
@@ -66,6 +61,7 @@ export class PageComponent implements OnInit, AfterViewInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(val => {
+        this.page.setFilter(val);
         console.log(val);
       });
   }
@@ -81,6 +77,11 @@ export class PageComponent implements OnInit, AfterViewInit, OnDestroy {
           return item[property];
       }
     };
+
+    this.page.filter$.subscribe(
+      filterValue => (this.dataSource.filter = filterValue.trim().toLowerCase())
+    );
+
     this.dataSource.paginator = this.paginator;
     this.paginator.page
       .pipe(
@@ -94,7 +95,7 @@ export class PageComponent implements OnInit, AfterViewInit, OnDestroy {
         })
       )
       .subscribe();
-    // this.dataSource.sort = this.sort;
+    this.dataSource.sort = this.sort;
   }
 
   create() {
@@ -125,24 +126,19 @@ export class PageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.page.setSelectedId(person.id);
   }
 
-  // next() {
-  //   console.log(`Length: ${this.dataSource.data.length}`);
-  //   console.log(`Current Page: ${this.paginator.pageIndex}`);
-  //   console.log(`Number of Pages: `, this.paginator.getNumberOfPages());
-  //   if (this.paginator.pageIndex + 1 === this.paginator.getNumberOfPages()) {
-  //     this.page.loadNextPage();
-  //   }
+  load() {
+    const patients = [
+      '6tsdlF1NwUYEACQlkj3P',
+      '9MNKyTXh7291u3GG3r1H',
+      'HQErjstsp5vrMaZyTrNi'
+    ];
+    this.page.retrieve(patients);
+    this.page.setSelectedId(patients[0]);
+  }
 
-  //   if (this.paginator.hasNextPage()) {
-  //     this.paginator.nextPage();
-  //   }
-  // }
-
-  // previous() {
-  //   if (this.paginator.hasPreviousPage()) {
-  //     this.paginator.previousPage();
-  //   }
-  // }
+  setPage(id: number) {
+    this.page.setCurrentPage(id);
+  }
 
   ngOnDestroy() {
     this.destroy$.next();

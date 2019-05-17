@@ -11,6 +11,7 @@ export interface State extends EntityState<Person> {
   currentPage: number;
   itemsPerPage: number;
   selectedId: string;
+  filter: string;
 }
 
 export const adapter: EntityAdapter<Person> = createEntityAdapter<Person>({
@@ -19,9 +20,10 @@ export const adapter: EntityAdapter<Person> = createEntityAdapter<Person>({
 
 export const initialState: any = adapter.getInitialState({
   loading: false,
-  currentPage: 0,
+  currentPage: 1,
   itemsPerPage: 5,
-  selectedId: ''
+  selectedId: '',
+  filter: ''
 });
 
 export function reducer(
@@ -30,6 +32,7 @@ export function reducer(
 ): State {
   switch (action.type) {
     case fromActions.ActionTypes.LoadSuccess:
+    case fromActions.ActionTypes.RetrieveSuccess:
       return adapter.upsertMany(action.payload, state);
     case fromActions.ActionTypes.SetCurrentPage:
       return { ...state, currentPage: action.payload };
@@ -39,6 +42,11 @@ export function reducer(
       return { ...state, loading: action.payload };
     case fromActions.ActionTypes.SetSelectedId:
       return { ...state, selectedId: action.payload };
+    case fromActions.ActionTypes.SetFilter:
+      return { ...state, filter: action.payload };
+    case fromActions.ActionTypes.LoadError:
+    case fromActions.ActionTypes.RetrieveError:
+      return { ...state, error: action.payload };
     default:
       return state;
   }
@@ -55,3 +63,4 @@ export const getLoading = (state: State) => state.loading;
 export const getCurrentPage = (state: State) => state.currentPage;
 export const getItemsPerPage = (state: State) => state.itemsPerPage;
 export const getSelectedId = (state: State) => state.selectedId;
+export const getFilter = (state: State) => state.filter;

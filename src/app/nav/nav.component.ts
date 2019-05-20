@@ -10,6 +10,7 @@ import {
   takeUntil
 } from 'rxjs/operators';
 import { AppFacade } from '../+state';
+import { SearchFacade } from '../search/+state/facade';
 
 @Component({
   selector: 'app-nav',
@@ -27,7 +28,8 @@ export class NavComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private fb: FormBuilder,
-    public app: AppFacade
+    public app: AppFacade,
+    private search: SearchFacade
   ) {}
 
   ngOnInit() {
@@ -41,7 +43,7 @@ export class NavComponent implements OnInit {
         takeUntil(this.destroy$)
       )
       .subscribe(val => {
-        console.log(val);
+        this.search.search(val);
       });
   }
 }

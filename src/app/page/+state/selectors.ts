@@ -18,11 +18,6 @@ export const selectIds = createSelector(
   fromReducer.selectIds
 );
 
-export const selectLoading = createSelector(
-  selectPageState,
-  fromReducer.getLoading
-);
-
 export const selectCurrentPage = createSelector(
   selectPageState,
   fromReducer.getCurrentPage

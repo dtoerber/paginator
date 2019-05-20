@@ -11,10 +11,6 @@ export class PageFacade {
     select(fromSelectors.selectAllItems)
   );
 
-  loading$: Observable<boolean> = this.store.pipe(
-    select(fromSelectors.selectLoading)
-  );
-
   currentPage$: Observable<number> = this.store.pipe(
     select(fromSelectors.selectCurrentPage)
   );
@@ -47,10 +43,6 @@ export class PageFacade {
 
   loadNextPage(pageSize: number) {
     this.store.dispatch(new fromActions.NextPageAction(pageSize));
-  }
-
-  setLoading(loading: boolean) {
-    this.store.dispatch(new fromActions.SetLoadingAction(loading));
   }
 
   save(person: Person) {

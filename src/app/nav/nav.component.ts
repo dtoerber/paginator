@@ -9,6 +9,7 @@ import {
   distinctUntilChanged,
   takeUntil
 } from 'rxjs/operators';
+import { AppFacade } from '../+state';
 
 @Component({
   selector: 'app-nav',
@@ -25,7 +26,8 @@ export class NavComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public app: AppFacade
   ) {}
 
   ngOnInit() {

@@ -21,13 +21,13 @@ export class DataService {
 
   retrieveInitialPeople(pageSize: number): Observable<any> {
     return this.afs
-      .collection(`people`, ref => ref.orderBy('lastName').limit(pageSize + 1))
+      .collection(`people`, ref => ref.orderBy('lastName').limit(pageSize * 2))
       .snapshotChanges()
       .pipe(
         map((actions: DocumentChangeAction<Person>[]) => {
           this.lastPersonRef = actions[actions.length - 1].payload.doc;
           return actions.map((a: DocumentChangeAction<Person>) => {
-            const data: Object = a.payload.doc.data() as Person;
+            const data: object = a.payload.doc.data() as Person;
             const id = a.payload.doc.id;
             return { id, ...data };
           });
@@ -40,17 +40,19 @@ export class DataService {
       .collection(`people`, ref =>
         ref
           .orderBy('lastName')
-          .limit(pageSize + 1)
+          .limit(pageSize * 2)
           .startAfter(this.lastPersonRef)
       )
       .snapshotChanges()
       .pipe(
         tap((actions: DocumentChangeAction<Person>[]) => {
-          this.lastPersonRef = actions[actions.length - 1].payload.doc;
+          if (actions.length) {
+            this.lastPersonRef = actions[actions.length - 1].payload.doc;
+          }
         }),
         map((actions: DocumentChangeAction<Person>[]) => {
           return actions.map((a: DocumentChangeAction<Person>) => {
-            const data: Object = a.payload.doc.data() as Person;
+            const data: object = a.payload.doc.data() as Person;
             const id = a.payload.doc.id;
             return { id, ...data };
           });

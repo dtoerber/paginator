@@ -18,6 +18,7 @@ import { PageFacade } from '../../+state/facade';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Person } from '../../../models';
 import * as faker from 'faker';
+import { AppFacade } from 'src/app/+state';
 
 @Component({
   selector: 'app-page',
@@ -40,7 +41,11 @@ export class PageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   myForm: FormGroup;
 
-  constructor(public page: PageFacade, private fb: FormBuilder) {}
+  constructor(
+    public page: PageFacade,
+    private fb: FormBuilder,
+    private app: AppFacade
+  ) {}
 
   ngOnInit() {
     this.page.people$.pipe(takeUntil(this.destroy$)).subscribe(people => {
@@ -89,7 +94,7 @@ export class PageComponent implements OnInit, AfterViewInit, OnDestroy {
           this.page.setItemsPerPage(val.pageSize);
           this.page.setCurrentPage(val.pageIndex);
           if ((val.pageIndex + 1) * val.pageSize >= val.length) {
-            this.page.setLoading(true);
+            this.app.setLoading(true);
             this.page.loadNextPage(val.pageSize);
           }
         })

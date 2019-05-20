@@ -7,7 +7,6 @@ export function sortByLastName(a: Person, b: Person): number {
 }
 
 export interface State extends EntityState<Person> {
-  loading: boolean;
   currentPage: number;
   itemsPerPage: number;
   selectedId: string;
@@ -38,8 +37,6 @@ export function reducer(
       return { ...state, currentPage: action.payload };
     case fromActions.ActionTypes.SetItemsPerPage:
       return { ...state, itemsPerPage: action.payload };
-    case fromActions.ActionTypes.SetLoading:
-      return { ...state, loading: action.payload };
     case fromActions.ActionTypes.SetSelectedId:
       return { ...state, selectedId: action.payload };
     case fromActions.ActionTypes.SetFilter:
@@ -59,7 +56,6 @@ export const {
   selectTotal
 } = adapter.getSelectors();
 
-export const getLoading = (state: State) => state.loading;
 export const getCurrentPage = (state: State) => state.currentPage;
 export const getItemsPerPage = (state: State) => state.itemsPerPage;
 export const getSelectedId = (state: State) => state.selectedId;

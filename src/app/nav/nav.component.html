@@ -34,6 +34,10 @@
         />
       </form>
     </mat-toolbar>
+    <mat-progress-bar
+      *ngIf="app.loading$ | async"
+      mode="indeterminate"
+    ></mat-progress-bar>
     <div class="container">
       <router-outlet></router-outlet>
     </div>

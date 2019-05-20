@@ -6,8 +6,6 @@ export enum ActionTypes {
   LoadSuccess = '[Paginator] Load Success',
   LoadError = '[Paginator] Load Error',
 
-  SetLoading = '[Paginator] Set Loading',
-
   NextPage = '[Paginator] Next Page',
   SetFilter = '[Paginator] Set Filter',
 
@@ -58,10 +56,6 @@ export class RetrieveErrorAction implements Action {
   readonly type = ActionTypes.RetrieveError;
   constructor(public payload: any) {}
 }
-export class SetLoadingAction implements Action {
-  readonly type = ActionTypes.SetLoading;
-  constructor(public payload: boolean) {}
-}
 export class SaveAction implements Action {
   readonly type = ActionTypes.Save;
   constructor(public payload: Person) {}
@@ -90,7 +84,6 @@ export type Union =
   | LoadAction
   | LoadSuccessAction
   | LoadErrorAction
-  | SetLoadingAction
   | NextPageAction
   | SetFilterAction
   | RetrieveAction

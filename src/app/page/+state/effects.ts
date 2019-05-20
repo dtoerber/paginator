@@ -2,24 +2,23 @@ import { Injectable } from '@angular/core';
 import { Observable, of, combineLatest } from 'rxjs';
 import { switchMap, map, catchError, tap } from 'rxjs/operators';
 import { Action } from '@ngrx/store';
-import { Actions, Effect, ofType, EffectsModule } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import * as fromActions from './actions';
 import { DataService } from '../../services/data.service';
 import { FirestoreService } from '../../services/firestore.service';
 import { PageFacade } from './facade';
+import { AppFacade } from '../../+state';
 @Injectable()
 export class PageEffects {
   @Effect()
   load$: Observable<Action> = this.actions$.pipe(
     ofType<fromActions.LoadAction>(fromActions.ActionTypes.Load),
-    tap(() => new fromActions.SetLoadingAction(true)),
     switchMap(action => {
       return this.data.retrieveInitialPeople(action.payload).pipe(
-        switchMap(data => [
-          new fromActions.LoadSuccessAction(data),
-          new fromActions.SetLoadingAction(false)
-        ]),
-
+        map(data => {
+          this.app.setLoading(true);
+          return new fromActions.LoadSuccessAction(data);
+        }),
         catchError(err => of(new fromActions.LoadErrorAction(err)))
       );
     })
@@ -30,13 +29,19 @@ export class PageEffects {
     ofType<fromActions.NextPageAction>(fromActions.ActionTypes.NextPage),
     switchMap(action => {
       return this.data.retrievePeopleNextPage(action.payload).pipe(
-        switchMap(data => [
-          new fromActions.LoadSuccessAction(data),
-          new fromActions.SetLoadingAction(false)
-        ]),
+        map(data => {
+          this.app.setLoading(true);
+          return new fromActions.LoadSuccessAction(data);
+        }),
         catchError(err => of(new fromActions.LoadErrorAction(err)))
       );
     })
+  );
+
+  @Effect({ dispatch: false })
+  loadSuccess$ = this.actions$.pipe(
+    ofType<fromActions.LoadSuccessAction>(fromActions.ActionTypes.LoadSuccess),
+    map(() => this.app.setLoading(false))
   );
 
   @Effect()
@@ -72,17 +77,6 @@ export class PageEffects {
   ).pipe(
     map(([action, ids]) => {
       const patients = action.payload;
-      // let newPage = 0;
-      // const idx = ids.findIndex(element => element === patients[0].id);
-      // if (idx >= 0) {
-      //   newPage = idx === 0 ? 0 : Math.floor(idx / 5);
-      //   console.log(
-      //     `IN retrieveSuccess() PatientId: ${
-      //       patients[0].id
-      //     } index: ${idx} page: ${newPage}`
-      //   );
-      // }
-      // return new fromActions.SetCurrentPageAction(newPage);
       return new fromActions.SetFilterAction(patients[0].lastName);
     })
   );
@@ -91,6 +85,7 @@ export class PageEffects {
     private actions$: Actions,
     private data: DataService,
     private firestore: FirestoreService,
-    private page: PageFacade
+    private page: PageFacade,
+    private app: AppFacade
   ) {}
 }

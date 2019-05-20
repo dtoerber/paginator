@@ -228,18 +228,12 @@ export class AdminService {
     );
   }
 
-  // elasticInsert(col: CollectionData): Observable<any> {
-  //   const doc = col.data[2];
-  //   console.log(doc.id);
-  //   return this.http.post(`http://localhost:9200/people/_doc/${doc.id}`, doc);
-  // }
-
   elasticInsert(col: CollectionData): Observable<any> {
     return forkJoin(
       col.data.map(doc => {
         return this.http
           .post(`http://localhost:9200/people/_doc/${doc.id}`, doc)
-          .pipe(tap(() => `insert ${doc.id}`));
+          .pipe(tap(() => console.log(`insert ${doc.id}`)));
       })
     );
   }

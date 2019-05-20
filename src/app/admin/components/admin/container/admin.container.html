@@ -1,0 +1,15 @@
+<marrick-admin-ui
+  [collections]="collections$ | async"
+  (retrieve)="onRetrieve($event)"
+  (load)="onLoad($event)"
+  (retrieveAll)="onRetrieveAll()"
+  (save)="onSave($event)"
+  (saveAll)="onSaveAll()"
+  (persist)="onPersist($event)"
+  (persistAll)="onPersistAll()"
+  (filesValid)="filesValid($event)"
+  (analyze)="analyze($event)"
+  (analyzeAll)="analyzeAll()"
+  (insert)="elasticInsert($event)"
+  (delete)="elasticDelete($event)"
+></marrick-admin-ui>

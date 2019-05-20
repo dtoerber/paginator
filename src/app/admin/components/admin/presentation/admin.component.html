@@ -1,0 +1,92 @@
+<mat-card>
+  <mat-card-content>
+    <mat-accordion>
+      <mat-expansion-panel
+        *ngFor="let collection of collections"
+        [expanded]="collection.data"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ getExpansionHeading(collection) }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-expansion-panel [expanded]="false">
+          <mat-expansion-panel-header>Data</mat-expansion-panel-header>
+          <mat-expansion-panel *ngFor="let doc of collection.data">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ doc.id }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <pre>{{ doc | json }}</pre>
+          </mat-expansion-panel>
+        </mat-expansion-panel>
+        <mat-action-row>
+          <button mat-button color="warn" (click)="insert.emit(collection)">
+            Insert
+          </button>
+          <button mat-button color="warn" (click)="analyze.emit(collection)">
+            Analyze
+          </button>
+          <button
+            mat-button
+            [disabled]="collection.data"
+            color="accent"
+            (click)="retrieve.emit(collection)"
+          >
+            Retrieve
+          </button>
+
+          <button
+            mat-button
+            [disabled]="collection.data"
+            color="primary"
+            (click)="file.click()"
+          >
+            Load
+          </button>
+          <input
+            #file
+            marrickSelectFiles
+            type="file"
+            [multiple]="false"
+            [accept]="'.json'"
+            (validFiles)="filesValid.emit($event)"
+            (invalidFiles)="filesInvalid.emit($event)"
+          />
+          <button
+            [disabled]="!collection.retrieved"
+            mat-button
+            color="warn"
+            (click)="save.emit(collection)"
+          >
+            Save
+          </button>
+
+          <button
+            [disabled]="!collection.loaded"
+            mat-button
+            color="warn"
+            (click)="persist.emit(collection)"
+          >
+            Persist
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button color="primary" (click)="analyzeAll.emit()">
+      Analyze All
+    </button>
+    <button mat-button color="accent" (click)="retrieveAll.emit()">
+      Retrieve All
+    </button>
+    <button mat-button color="warn" (click)="saveAll.emit()">
+      Save All
+    </button>
+    <button mat-button color="warn" (click)="persistAll.emit()">
+      Persist All
+    </button>
+  </mat-card-actions>
+</mat-card>

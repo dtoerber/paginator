@@ -11,7 +11,7 @@ export class SearchEffects {
   search$: Observable<Action> = this.actions$.pipe(
     ofType<fromActions.SearchAction>(fromActions.ActionTypes.Search),
     switchMap(action => {
-      return this.search.search().pipe(
+      return this.search.searchLastName(action.payload).pipe(
         map(data => {
           const results = [];
           const hits = data.hits.hits;

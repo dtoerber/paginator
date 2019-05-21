@@ -1,3 +1,12 @@
-<div *ngFor="let s of search.results$ | async">
-  {{ s.firstName }} {{ s.lastName }}
-</div>
+<table style="width:100%">
+  <tr>
+    <th>Name</th>
+    <th>Phone</th>
+    <th>DOD</th>
+  </tr>
+  <tr *ngFor="let s of search.results$ | async">
+    <td>{{ s.lastName }}, {{ s.firstName }}</td>
+    <td>{{ s.phone }}</td>
+    <td>{{ s.DOI }}</td>
+  </tr>
+</table>

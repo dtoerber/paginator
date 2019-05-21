@@ -3,6 +3,8 @@ import { Observable, BehaviorSubject, forkJoin, from } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FirestoreService } from '../../services/firestore.service';
 import { HttpClient } from '@angular/common/http';
+import * as moment from 'moment';
+
 export interface CollectionData {
   name: string;
   collection: string;
@@ -231,8 +233,24 @@ export class AdminService {
   elasticInsert(col: CollectionData): Observable<any> {
     return forkJoin(
       col.data.map(doc => {
+        let record = { ...doc };
+        if (col.name.toLocaleLowerCase() === 'people') {
+          record = {
+            ...record,
+            DOB: moment(doc.DOB.seconds * 1000).toString(),
+            DOI: moment(doc.DOI.seconds * 1000).toString(),
+            createdAt: moment(doc.createdAt.seconds * 1000).toString(),
+            updatedAt: moment(doc.updatedAt.seconds * 1000).toString()
+          };
+        }
+        console.log(record);
         return this.http
-          .post(`http://localhost:9200/people/_doc/${doc.id}`, doc)
+          .post(
+            `http://localhost:9200/${col.name.toLocaleLowerCase()}/_doc/${
+              record.id
+            }`,
+            record
+          )
           .pipe(tap(() => console.log(`insert ${doc.id}`)));
       })
     );

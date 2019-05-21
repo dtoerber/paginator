@@ -237,13 +237,13 @@ export class AdminService {
         if (col.name.toLocaleLowerCase() === 'people') {
           record = {
             ...record,
-            DOB: moment(doc.DOB.seconds * 1000).toString(),
-            DOI: moment(doc.DOI.seconds * 1000).toString(),
-            createdAt: moment(doc.createdAt.seconds * 1000).toString(),
-            updatedAt: moment(doc.updatedAt.seconds * 1000).toString()
+            DOB: moment(doc.DOB.seconds * 1000).toLocaleString(),
+            DOI: moment(doc.DOI.seconds * 1000).toLocaleString(),
+            createdAt: moment(doc.createdAt.seconds * 1000).toLocaleString(),
+            updatedAt: moment(doc.updatedAt.seconds * 1000).toLocaleString()
           };
         }
-        console.log(record);
+        // console.log(record);
         return this.http
           .post(
             `http://localhost:9200/${col.name.toLocaleLowerCase()}/_doc/${

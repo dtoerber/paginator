@@ -99,6 +99,12 @@ export class AdminContainerComponent {
     this.admin.elasticInsert(collection);
   }
 
+  elasticBulk(collection: CollectionData) {
+    if (collection.data && collection.data.map) {
+      this.admin.elasticBulk(collection);
+    }
+  }
+
   elasticDelete(collection: CollectionData) {
     this.admin.elasticDelete(collection);
   }

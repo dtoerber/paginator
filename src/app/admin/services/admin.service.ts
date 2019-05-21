@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, forkJoin, from } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FirestoreService } from '../../services/firestore.service';
@@ -21,6 +22,7 @@ export class AdminService {
     Array<CollectionData>
   > = new BehaviorSubject([]);
 
+  private ElasticSearchURL = `http://localhost:9200`;
   /**
    * Define all the Collections in the Firestore
    */
@@ -230,6 +232,50 @@ export class AdminService {
     );
   }
 
+  elasticBulkCreate(col: CollectionData): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    };
+
+    let bulk = '';
+    col.data.map(doc => {
+      bulk =
+        bulk +
+        `{"create": { "_id": "${
+          doc.id
+        }", "_index": "${col.name.toLocaleLowerCase()}", "_type": "_doc"}}` +
+        `\n` +
+        JSON.stringify(doc) +
+        `\n`;
+    });
+    bulk = bulk + `\n`;
+    return this.http
+      .post(`${this.ElasticSearchURL}/_bulk`, bulk, httpOptions)
+      .pipe(tap(() => console.log(bulk)));
+  }
+
+  elasticBulkUpdate(col: CollectionData): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    };
+
+    let bulk = '';
+    col.data.map(doc => {
+      bulk =
+        bulk +
+        `{"update": { "_id": "${
+          doc.id
+        }", "_index": "${col.name.toLocaleLowerCase()}", "_type": "_doc"}}` +
+        `\n{"doc": ` +
+        JSON.stringify(doc) +
+        `}\n`;
+    });
+    bulk = bulk + `\n`;
+    return this.http
+      .post(`${this.ElasticSearchURL}/_bulk`, bulk, httpOptions)
+      .pipe(tap(() => console.log(bulk)));
+  }
+
   elasticInsert(col: CollectionData): Observable<any> {
     return forkJoin(
       col.data.map(doc => {
@@ -245,8 +291,8 @@ export class AdminService {
         }
         // console.log(record);
         return this.http
-          .post(
-            `http://localhost:9200/${col.name.toLocaleLowerCase()}/_doc/${
+          .put(
+            `${this.ElasticSearchURL}/${col.name.toLocaleLowerCase()}/_doc/${
               record.id
             }`,
             record
@@ -256,7 +302,7 @@ export class AdminService {
     );
   }
 
-  elasticDelete(col: CollectionData) {
-    console.log(`collection: `, col);
+  elasticDelete(id: string) {
+    return this.http.delete(id);
   }
 }

@@ -42,6 +42,10 @@ export enum ActionTypes {
   ElasticInsertSuccess = '[Admin] ElasticSearch Insert Success',
   ElasticInsertError = '[Admin] ElasticSearch Insert Error',
 
+  ElasticBulk = '[Admin] ElasticSearch Bulk',
+  ElasticBulkSuccess = '[Admin] ElasticSearch Bulk Success',
+  ElasticBulkError = '[Admin] ElasticSearch Bulk Error',
+
   ElasticDelete = '[Admin] ElasticSearch Delete',
   ElasticDeleteSuccess = '[Admin] ElasticSearch Delete Success',
   ElasticDeleteError = '[Admin] ElasticSearch Insert Delete Error',
@@ -178,9 +182,23 @@ export class ElasticInsertErrorAction implements Action {
   constructor(public payload: any) {}
 }
 
+export class ElasticBulkAction implements Action {
+  readonly type = ActionTypes.ElasticBulk;
+  constructor(public payload: any) {}
+}
+
+export class ElasticBulkSuccessAction implements Action {
+  readonly type = ActionTypes.ElasticBulkSuccess;
+}
+
+export class ElasticBulkErrorAction implements Action {
+  readonly type = ActionTypes.ElasticBulkError;
+  constructor(public payload: any) {}
+}
+
 export class ElasticDeleteAction implements Action {
   readonly type = ActionTypes.ElasticDelete;
-  constructor(public payload: any) {}
+  constructor(public payload: string) {}
 }
 
 export class ElasticDeleteSuccessAction implements Action {
@@ -238,6 +256,9 @@ export type AdminActionsUnion =
   | ElasticInsertAction
   | ElasticInsertSuccessAction
   | ElasticInsertErrorAction
+  | ElasticBulkAction
+  | ElasticBulkSuccessAction
+  | ElasticBulkErrorAction
   | ElasticDeleteAction
   | ElasticDeleteSuccessAction
   | ElasticDeleteErrorAction

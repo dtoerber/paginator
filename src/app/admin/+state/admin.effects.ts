@@ -181,15 +181,35 @@ export class AdminEffects {
     switchMap(action =>
       this.adminService
         .elasticInsert(action.payload)
-        .pipe(map(() => new fromStore.ElasticInsertSuccessAction()))
+        .pipe(
+          map(
+            () => new fromStore.ElasticInsertSuccessAction(),
+            catchError(err => of(new fromStore.ElasticInsertErrorAction(err)))
+          )
+        )
+    )
+  );
+
+  @Effect()
+  elasticBulk$: Observable<Action> = this.actions$.pipe(
+    ofType<fromStore.ElasticBulkAction>(fromStore.ActionTypes.ElasticBulk),
+    switchMap(action =>
+      this.adminService.elasticBulkCreate(action.payload).pipe(
+        map(() => new fromStore.ElasticBulkSuccessAction()),
+        catchError(err => of(new fromStore.ElasticBulkErrorAction(err)))
+      )
     )
   );
 
   @Effect()
   elasticDelete$: Observable<Action> = this.actions$.pipe(
     ofType<fromStore.ElasticDeleteAction>(fromStore.ActionTypes.ElasticDelete),
-    map(action => this.adminService.elasticDelete(action.payload)),
-    map(() => new fromStore.ElasticDeleteSuccessAction())
+    switchMap(action =>
+      this.adminService.elasticDelete(action.payload).pipe(
+        map(() => new fromStore.ElasticDeleteSuccessAction()),
+        catchError(err => of(new fromStore.ElasticDeleteErrorAction(err)))
+      )
+    )
   );
 
   constructor(

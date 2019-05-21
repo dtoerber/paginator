@@ -52,4 +52,8 @@ export class AdminFacade {
   elasticDelete(data: any) {
     this.store.dispatch(new fromActions.ElasticDeleteAction(data));
   }
+
+  elasticBulk(data: any) {
+    this.store.dispatch(new fromActions.ElasticBulkAction(data));
+  }
 }

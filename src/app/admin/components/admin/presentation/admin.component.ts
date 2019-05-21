@@ -44,6 +44,8 @@ export class AdminComponent {
   @Output()
   insert: EventEmitter<void> = new EventEmitter();
   @Output()
+  bulk: EventEmitter<void> = new EventEmitter();
+  @Output()
   delete: EventEmitter<void> = new EventEmitter();
 
   uploading = false;

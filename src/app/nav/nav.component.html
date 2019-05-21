@@ -7,9 +7,9 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)"
   >
-    <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="home">Home</a>
+      <a mat-list-item routerLink="admin">Administration</a>
       <a mat-list-item routerLink="page">Paginator</a>
     </mat-nav-list>
   </mat-sidenav>

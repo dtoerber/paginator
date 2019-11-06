@@ -6,7 +6,7 @@ import { SearchResultsComponent } from './search/components/search-results/searc
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/page',
     pathMatch: 'full'
   },
   {
